@@ -1,0 +1,26 @@
+# Format Style Options - Created with Clang Power Tools
+---
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveBitFields: Consecutive
+AlignConsecutiveDeclarations: None
+AlignOperands: Align
+AlignTrailingComments: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+BasedOnStyle: LLVM
+BitFieldColonSpacing: After
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBraces: Allman
+ColumnLimit: 190
+IncludeBlocks: Regroup
+IndentCaseLabels: false
+IndentWidth: 4
+Language: Cpp
+NamespaceIndentation: All
+PointerAlignment: Left
+SortIncludes: true
+SpaceBeforeAssignmentOperators: true
+TabWidth: 4
+UseTab: true
+...

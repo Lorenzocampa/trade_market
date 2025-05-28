@@ -1,0 +1,48 @@
+CompileFlags:
+  Remove: [
+    "-march=armv7-a",
+    "-mfloat-abi=hard",
+    "-mfpu=neon",
+    "-mtune=cortex-a9",
+    "-fmodules-ts",
+    "-fmodule-mapper=CMakeFiles/file_encryptor.dir/src/main.cpp.o.modmap",
+    "-fdeps-format=p1689r5"
+  ]
+  Add: [
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Wshadow",
+    "-std=c++17"
+  ]
+Diagnostics:
+  UnusedIncludes: Strict
+  ClangTidy:
+    Add: [
+      "modernize-*",
+      "bugprone-*",
+      "performance-*",
+      "readability-*",
+      "clang-diagnostic-*",
+      "clang-analyzer-*",
+      "cppcoreguidelines-*"
+    ]
+    Remove: [
+      "readability-magic-numbers",
+      "bugprone-easily-swappable-parameters",
+      "bugprone-forwarding-reference-overload",
+      "fuchsia*",
+      "llvmlibc*",
+      "altera*",
+      "cppcoreguidelines-owning-memory"
+    ]
+Index:
+  Background: Build
+InlayHints:
+  Enabled: Yes
+  ParameterNames: Yes
+  DeducedTypes: Yes
+  Designators: Yes
+  BlockEnd: Yes
+Hover:
+  ShowAKA: Yes

@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug with LLDB",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/file_encryptor",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build",
+            "exitCommands": [
+                "quit",
+                "clear"
+            ],
+            "stopOnEntry": false,
+            "breakpointMode": "path",
+            "reverseDebugging": true,
+            "sourceLanguages": [
+                "cpp"
+            ],
+            "terminal": "integrated",
+            "env": {
+                "XTERM": "xterm-256color",
+                "PATH": "${env:PATH}",
+                "ASAN_OPTIONS": "halt_on_error=1:detect_stack_use_after_return=1"
+            },
+            "preRunCommands": [
+                "breakpoint set --name __asan_report_error"
+            ]
+        }
+    ]
+}
