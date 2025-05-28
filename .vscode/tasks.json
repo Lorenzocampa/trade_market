@@ -4,11 +4,18 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "./compile_build.sh",
-            "args": [],
+            "command": "cmake",
+            "args": [
+                "--build",
+                "${workspaceFolder}/build"
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "options": {
+                "cwd": "${workspaceFolder}/build"
             }
         }
     ]

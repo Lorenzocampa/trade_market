@@ -17,4 +17,8 @@
 		"--limit-references=24",
 		"--limit-results=24"
 	],
+
+	"cmake.generator": "Ninja",
+	"cmake.buildDirectory": "${workspaceFolder}/build",
+	"cmake.configureOnOpen": true
 }
