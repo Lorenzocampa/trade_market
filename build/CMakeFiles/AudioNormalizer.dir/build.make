@@ -198,6 +198,20 @@ CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.s:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/common_windows/dev/decibel_normalize/external/imgui/backends/imgui_impl_opengl3.cpp -o CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.s
 
+CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o: CMakeFiles/AudioNormalizer.dir/flags.make
+CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o: /mnt/c/common_windows/dev/decibel_normalize/external/imguifiledialog/ImGuiFileDialog.cpp
+CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o: CMakeFiles/AudioNormalizer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o -MF CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o.d -o CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o -c /mnt/c/common_windows/dev/decibel_normalize/external/imguifiledialog/ImGuiFileDialog.cpp
+
+CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/common_windows/dev/decibel_normalize/external/imguifiledialog/ImGuiFileDialog.cpp > CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.i
+
+CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/common_windows/dev/decibel_normalize/external/imguifiledialog/ImGuiFileDialog.cpp -o CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.s
+
 # Object files for target AudioNormalizer
 AudioNormalizer_OBJECTS = \
 "CMakeFiles/AudioNormalizer.dir/src/main.cpp.o" \
@@ -208,7 +222,8 @@ AudioNormalizer_OBJECTS = \
 "CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_tables.cpp.o" \
 "CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o" \
 "CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_glfw.cpp.o" \
-"CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o"
+"CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o" \
+"CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o"
 
 # External object files for target AudioNormalizer
 AudioNormalizer_EXTERNAL_OBJECTS =
@@ -222,28 +237,15 @@ AudioNormalizer: CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_tables.cpp.
 AudioNormalizer: CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o
 AudioNormalizer: CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_glfw.cpp.o
 AudioNormalizer: CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o
+AudioNormalizer: CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o
 AudioNormalizer: CMakeFiles/AudioNormalizer.dir/build.make
 AudioNormalizer: CMakeFiles/AudioNormalizer.dir/compiler_depend.ts
 AudioNormalizer: /usr/lib/x86_64-linux-gnu/libglfw.so.3.4
 AudioNormalizer: /usr/local/lib/libspdlogd.a
-AudioNormalizer: external/nativefiledialog/src/libnfd.a
 AudioNormalizer: /usr/lib/x86_64-linux-gnu/libGLX.so
 AudioNormalizer: /usr/lib/x86_64-linux-gnu/libOpenGL.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libgtk-3.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libgdk-3.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libz.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libpango-1.0.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libharfbuzz.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libatk-1.0.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libcairo-gobject.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libcairo.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libgdk_pixbuf-2.0.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libgio-2.0.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libgobject-2.0.so
-AudioNormalizer: /usr/lib/x86_64-linux-gnu/libglib-2.0.so
 AudioNormalizer: CMakeFiles/AudioNormalizer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable AudioNormalizer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable AudioNormalizer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/AudioNormalizer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -16,6 +16,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_tables.cpp.o.d"
   "CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o"
   "CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o.d"
+  "CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o"
+  "CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o.d"
   "CMakeFiles/AudioNormalizer.dir/src/glad.c.o"
   "CMakeFiles/AudioNormalizer.dir/src/glad.c.o.d"
   "CMakeFiles/AudioNormalizer.dir/src/main.cpp.o"

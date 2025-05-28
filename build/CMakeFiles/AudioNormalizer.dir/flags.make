@@ -5,13 +5,13 @@
 # compile CXX with /usr/bin/c++
 C_DEFINES = -DSPDLOG_COMPILED_LIB
 
-C_INCLUDES = -I/mnt/c/common_windows/dev/decibel_normalize/include -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/decibel_normalize/external/nativefiledialog/src/include
+C_INCLUDES = -I/mnt/c/common_windows/dev/decibel_normalize/include -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/decibel_normalize/external/imguifiledialog
 
 C_FLAGS = 
 
 CXX_DEFINES = -DSPDLOG_COMPILED_LIB
 
-CXX_INCLUDES = -I/mnt/c/common_windows/dev/decibel_normalize/include -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/decibel_normalize/external/nativefiledialog/src/include
+CXX_INCLUDES = -I/mnt/c/common_windows/dev/decibel_normalize/include -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/decibel_normalize/external/imguifiledialog
 
 CXX_FLAGS = -std=gnu++20
 

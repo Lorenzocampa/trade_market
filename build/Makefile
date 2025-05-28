@@ -310,6 +310,30 @@ external/imgui/imgui_widgets.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/AudioNormalizer.dir/build.make CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.s
 .PHONY : external/imgui/imgui_widgets.cpp.s
 
+external/imguifiledialog/ImGuiFileDialog.o: external/imguifiledialog/ImGuiFileDialog.cpp.o
+.PHONY : external/imguifiledialog/ImGuiFileDialog.o
+
+# target to build an object file
+external/imguifiledialog/ImGuiFileDialog.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AudioNormalizer.dir/build.make CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o
+.PHONY : external/imguifiledialog/ImGuiFileDialog.cpp.o
+
+external/imguifiledialog/ImGuiFileDialog.i: external/imguifiledialog/ImGuiFileDialog.cpp.i
+.PHONY : external/imguifiledialog/ImGuiFileDialog.i
+
+# target to preprocess a source file
+external/imguifiledialog/ImGuiFileDialog.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AudioNormalizer.dir/build.make CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.i
+.PHONY : external/imguifiledialog/ImGuiFileDialog.cpp.i
+
+external/imguifiledialog/ImGuiFileDialog.s: external/imguifiledialog/ImGuiFileDialog.cpp.s
+.PHONY : external/imguifiledialog/ImGuiFileDialog.s
+
+# target to generate assembly for a file
+external/imguifiledialog/ImGuiFileDialog.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/AudioNormalizer.dir/build.make CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.s
+.PHONY : external/imguifiledialog/ImGuiFileDialog.cpp.s
+
 src/glad.o: src/glad.c.o
 .PHONY : src/glad.o
 
@@ -389,6 +413,9 @@ help:
 	@echo "... external/imgui/imgui_widgets.o"
 	@echo "... external/imgui/imgui_widgets.i"
 	@echo "... external/imgui/imgui_widgets.s"
+	@echo "... external/imguifiledialog/ImGuiFileDialog.o"
+	@echo "... external/imguifiledialog/ImGuiFileDialog.i"
+	@echo "... external/imguifiledialog/ImGuiFileDialog.s"
 	@echo "... src/glad.o"
 	@echo "... src/glad.i"
 	@echo "... src/glad.s"
