@@ -30,9 +30,6 @@ set(IMGUIFILEDIALOG_SOURCES
 	external/imguifiledialog/ImGuiFileDialog.cpp
 )
 
-#nativefiledialog
-add_subdirectory(external/nativefiledialog)
-
 # Add executable
 add_executable(${PROJECT_NAME}
     src/main.cpp

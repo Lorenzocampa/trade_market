@@ -1,8 +1,3 @@
 /mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles/AudioNormalizer.dir
 /mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles/edit_cache.dir
 /mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles/rebuild_cache.dir
-/mnt/c/common_windows/dev/decibel_normalize/build/external/nativefiledialog/CMakeFiles/edit_cache.dir
-/mnt/c/common_windows/dev/decibel_normalize/build/external/nativefiledialog/CMakeFiles/rebuild_cache.dir
-/mnt/c/common_windows/dev/decibel_normalize/build/external/nativefiledialog/src/CMakeFiles/nfd.dir
-/mnt/c/common_windows/dev/decibel_normalize/build/external/nativefiledialog/src/CMakeFiles/edit_cache.dir
-/mnt/c/common_windows/dev/decibel_normalize/build/external/nativefiledialog/src/CMakeFiles/rebuild_cache.dir

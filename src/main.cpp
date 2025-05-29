@@ -5,6 +5,7 @@
 #include "../external/imgui/imgui.h"
 #include "../external/imguifiledialog/ImGuiFileDialog.h"
 #include "../include/glad/glad.h"
+#include "../include/imfilebrowser.h"
 #include "spdlog/spdlog.h"
 
 #include <GLFW/glfw3.h>
@@ -19,12 +20,14 @@ namespace fs = std::filesystem;
 struct AppState
 {
 	char path_buffer[512] = "";
-	std::string selected_path;
-	bool processing	  = false;
-	bool show_success = false;
-	bool show_error	  = false;
+	bool processing		  = false;
+	bool show_success	  = false;
+	bool show_error		  = false;
 	std::string error_message;
+	std::string selected_path;
 	int processed_files = 0;
+
+	ImGui::FileBrowser file_browser{ImGuiFileBrowserFlags_SelectDirectory};
 };
 
 auto normalize_audio_files_in_directory(const std::string& input_dir, AppState& state) -> int
@@ -115,46 +118,30 @@ void render_ui(AppState& state)
 
 	if (ImGui::Button("sfoglia", ImVec2(button_width, 0)))
 	{
-		IGFD::FileDialogConfig config;
-		config.path	 = ".";
-		config.flags = ImGuiFileDialogFlags_Modal;
-
-		ImGuiFileDialog::Instance()->OpenDialog("SelectFolderDlg", "Seleziona cartella", nullptr, config);
+		state.file_browser.SetTitle("select audio directory");
+		state.file_browser.SetTypeFilters({});
+		state.file_browser.Open();
 	}
 
-	if (ImGuiFileDialog::Instance()->IsOpened("SelectFolderDlg"))
+	state.file_browser.Display();
+
+	if (state.file_browser.HasSelected())
 	{
-		ImVec2 main_size = ImGui::GetIO().DisplaySize;
+		std::filesystem::path selected = state.file_browser.GetSelected();
 
-		// Dimensione iniziale: 90% della finestra principale
-		ImVec2 initial_size = ImVec2(main_size.x * 0.9f, main_size.y * 0.9f);
-
-		// Limite minimo ragionevole (es. 300x200)
-		ImVec2 min_size = ImVec2(300, 200);
-
-		// Limite massimo: dimensione della finestra principale
-		ImVec2 max_size = main_size;
-
-		// Imposta dimensione iniziale
-		ImGui::SetNextWindowSize(initial_size, ImGuiCond_Once);
-
-		// Imposta vincoli dimensione (min e max)
-		ImGui::SetNextWindowSizeConstraints(min_size, max_size);
-
-		// Mostra la finestra dialogo
-		if (ImGuiFileDialog::Instance()->Display("SelectFolderDlg"))
+		if (std::filesystem::is_regular_file(selected))
 		{
-			if (ImGuiFileDialog::Instance()->IsOk())
-			{
-				std::string path = ImGuiFileDialog::Instance()->GetCurrentPath();
-				strncpy(state.path_buffer, path.c_str(), sizeof(state.path_buffer) - 1);
-				state.path_buffer[sizeof(state.path_buffer) - 1] = '\0';
-				state.selected_path								 = path;
-				state.show_success								 = false;
-				state.show_error								 = false;
-			}
-			ImGuiFileDialog::Instance()->Close();
+			selected = selected.parent_path();
 		}
+
+		std::string path_str = selected.string();
+		strncpy(state.path_buffer, path_str.c_str(), sizeof(state.path_buffer) - 1);
+		state.path_buffer[sizeof(state.path_buffer) - 1] = '\0';
+		state.selected_path								 = path_str;
+		state.show_success								 = false;
+		state.show_error								 = false;
+
+		state.file_browser.ClearSelected();
 	}
 
 	ImGui::Separator();
