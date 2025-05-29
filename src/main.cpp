@@ -281,6 +281,7 @@ void render_ui(AppState& state)
 	ImGui::Text("Formati supportati: WAV, MP3, FLAC");
 	ImGui::Text("Richiede FFmpeg installato nel sistema");
 	ImGui::Text("Suggerimento: copia e incolla il percorso dal file manager");
+	ImGui::Separator();
 
 	ImGui::End();
 }
