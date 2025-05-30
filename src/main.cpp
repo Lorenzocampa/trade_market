@@ -28,18 +28,21 @@ struct AppState
 	int processed_files = 0;
 
 	ImGui::FileBrowser file_browser{ImGuiFileBrowserFlags_SelectDirectory};
+	std::vector<std::pair<std::string, bool>> log_lines;
 };
 
 auto normalize_audio_files_in_directory(const std::string& input_dir, AppState& state) -> int
 {
 	if (!fs::exists(input_dir) || !fs::is_directory(input_dir))
 	{
-		state.error_message = "Directory non valida o inesistente";
+		state.error_message = "Invalid or non-existent directory";
 		state.show_error	= true;
 		return 1;
 	}
 
 	state.processed_files = 0;
+
+	state.log_lines.clear();
 
 	for (const auto& entry : fs::directory_iterator(input_dir))
 	{
@@ -62,33 +65,42 @@ auto normalize_audio_files_in_directory(const std::string& input_dir, AppState& 
 		std::string temp_output = path.parent_path().string() + "/temp_" + path.filename().string();
 		std::string command		= "ffmpeg -y -i \"" + path.string() + "\" -af loudnorm \"" + temp_output + "\"";
 
-		spdlog::info("Elaborando: {}", path.filename().string());
+		int result = std::system(command.c_str());
+		std::error_code ec;
 
-		if (std::system(command.c_str()) == 0)
+		if (result == 0)
 		{
-			std::error_code ec;
 			fs::remove(path, ec);
 			if (ec)
 			{
-				spdlog::error("Errore nella rimozione del file originale: {}", ec.message());
+				spdlog::error("error while removing original file {}", ec.message());
 				fs::remove(temp_output, ec);
+				state.log_lines.emplace_back(path.filename().string(), false);
 				continue;
 			}
+
 			fs::rename(temp_output, path, ec);
 			if (!ec)
 			{
 				state.processed_files++;
+				state.log_lines.emplace_back(path.filename().string(), true);
+			}
+			else
+			{
+				state.log_lines.emplace_back(path.filename().string(), false);
 			}
 		}
 		else
 		{
-			spdlog::error("Errore nell'elaborazione di: {}", path.filename().string());
-			std::error_code ec;
+			spdlog::error("error elaborating: {}", path.filename().string());
 			fs::remove(temp_output, ec);
+			state.log_lines.emplace_back(path.filename().string(), false);
 		}
+
+		spdlog::info("Elaborating: {}", path.filename().string());
 	}
 
-	spdlog::info("Elaborazione completata. File processati: {}", state.processed_files);
+	spdlog::info("Processing completed. Files processed: {}", state.processed_files);
 	return 0;
 }
 
@@ -99,7 +111,7 @@ void render_ui(AppState& state)
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 	ImGui::Begin("Audio Normalizer", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
-	ImGui::Text("Inserisci il percorso della cartella contenente i file audio");
+	ImGui::Text("Enter the path to the folder containing the audio files");
 	ImGui::Separator();
 
 	// Centrare InputText + bottone sfoglia
@@ -116,7 +128,7 @@ void render_ui(AppState& state)
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("sfoglia", ImVec2(button_width, 0)))
+	if (ImGui::Button("Browse", ImVec2(button_width, 0)))
 	{
 		state.file_browser.SetTitle("select audio directory");
 		state.file_browser.SetTypeFilters({});
@@ -147,7 +159,7 @@ void render_ui(AppState& state)
 	ImGui::Separator();
 
 	// Bottone di esempio per percorsi comuni
-	ImGui::Text("Percorsi di esempio:");
+	ImGui::Text("Example paths:");
 
 	// Centrare i 3 bottoni in linea con spaziatura
 	float btn_example_width = 100.0f;
@@ -181,12 +193,12 @@ void render_ui(AppState& state)
 	// Mostra il percorso selezionato
 	if (!state.selected_path.empty())
 	{
-		ImGui::Text("Cartella selezionata:");
+		ImGui::Text("Selected directory:");
 		ImGui::TextWrapped("%s", state.selected_path.c_str());
 
 		if (fs::exists(state.selected_path) && fs::is_directory(state.selected_path))
 		{
-			ImGui::TextColored(ImVec4(0, 1, 0, 1), "✓ Cartella valida");
+			ImGui::TextColored(ImVec4(0, 1, 0, 1), "Valid directory");
 
 			int audio_files = 0;
 			try
@@ -203,16 +215,16 @@ void render_ui(AppState& state)
 						}
 					}
 				}
-				ImGui::Text("File audio trovati: %d", audio_files);
+				ImGui::Text("audio files found: %d", audio_files);
 			}
 			catch (...)
 			{
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Attenzione: impossibile leggere la cartella");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: Unable to read folder");
 			}
 		}
 		else
 		{
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "✗ Cartella non valida");
+			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Directory not found");
 		}
 		ImGui::Separator();
 	}
@@ -229,7 +241,7 @@ void render_ui(AppState& state)
 	if (!can_process)
 		ImGui::BeginDisabled();
 
-	if (ImGui::Button("Normalizza File Audio", ImVec2(btn_norm_width, 40)))
+	if (ImGui::Button("Normalize Audio File", ImVec2(btn_norm_width, 40)))
 	{
 		state.processing   = true;
 		state.show_success = false;
@@ -256,17 +268,32 @@ void render_ui(AppState& state)
 	if (state.processing)
 	{
 		ImGui::Separator();
-		ImGui::Text("Elaborazione in corso...");
+		ImGui::Text("Processing in progress...");
 		ImGui::ProgressBar(-1.0f * ImGui::GetTime(), ImVec2(-1.0f, 0.0f));
-		ImGui::Text("Questo potrebbe richiedere diversi minuti...");
+		ImGui::Text("This may take several minutes...");
 	}
 
 	// Messaggi di successo
 	if (state.show_success)
 	{
 		ImGui::Separator();
-		ImGui::TextColored(ImVec4(0, 1, 0, 1), "✓ Elaborazione completata!");
+		ImGui::TextColored(ImVec4(0, 1, 0, 1), "Processing completed!");
 		ImGui::Text("File processati: %d", state.processed_files);
+	}
+
+	if (!state.log_lines.empty())
+	{
+		ImGui::Separator();
+		ImGui::Text("Status:");
+
+		for (const auto& log : state.log_lines)
+		{
+			const auto& filename = log.first;
+			bool success		 = log.second;
+
+			ImVec4 color = success ? ImVec4(0, 1, 0, 1) : ImVec4(1, 0, 1, 0);
+			ImGui::TextColored(color, "%s %s", success ? "✓" : "✗", filename.c_str());
+		}
 	}
 
 	// Messaggi di errore
@@ -278,9 +305,9 @@ void render_ui(AppState& state)
 	}
 
 	ImGui::Separator();
-	ImGui::Text("Formati supportati: WAV, MP3, FLAC");
-	ImGui::Text("Richiede FFmpeg installato nel sistema");
-	ImGui::Text("Suggerimento: copia e incolla il percorso dal file manager");
+	ImGui::Text("Supported formats: WAV, MP3, FLAC");
+	ImGui::Text("Requires FFmpeg installed on the system");
+	ImGui::Text("Tip: Copy and paste the path from the file manager");
 	ImGui::Separator();
 
 	ImGui::End();
@@ -297,7 +324,7 @@ auto main(int argc, char* argv[]) -> int
 	glfwSetErrorCallback(glfw_error_callback);
 	if (!glfwInit())
 	{
-		spdlog::error("Errore nell'inizializzazione di GLFW");
+		spdlog::error("Error initializing GLFW");
 		return 1;
 	}
 
@@ -311,7 +338,7 @@ auto main(int argc, char* argv[]) -> int
 	GLFWwindow* window = glfwCreateWindow(1024, 768, "Audio Normalizer", nullptr, nullptr);
 	if (window == nullptr)
 	{
-		spdlog::error("Errore nella creazione della finestra");
+		spdlog::error("Error creating window");
 		glfwTerminate();
 		return 1;
 	}
@@ -322,7 +349,7 @@ auto main(int argc, char* argv[]) -> int
 	// Inizializza GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
-		spdlog::error("Errore nell'inizializzazione di GLAD");
+		spdlog::error("Error initializing GLAD");
 		glfwTerminate();
 		return 1;
 	}
