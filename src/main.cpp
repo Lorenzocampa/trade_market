@@ -1,3 +1,5 @@
+// main_updated.cpp
+
 #include "../include/main.hpp"
 
 #include "../external/imgui/backends/imgui_impl_glfw.h"
@@ -11,7 +13,9 @@
 #include <GLFW/glfw3.h>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <thread>
 
@@ -27,11 +31,134 @@ struct AppState
 	std::string selected_path;
 	int processed_files = 0;
 
+	int selected_theme		= 0;
+	ImVec4 custom_color		= ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+	ImVec4 temp_color		= ImVec4(0.45F, 0.55F, 0.60F, 1.00F);
+	bool show_color_picker	= false;
+	ImVec2 color_picker_pos = ImVec2(0, 0);
+
+	// Nuovi colori per l'interfaccia
+	ImVec4 ui_button_color		= ImVec4(0.26F, 0.59F, 0.98F, 1.00F); // Blu per i bottoni
+	ImVec4 ui_input_color		= ImVec4(0.16F, 0.29F, 0.48F, 1.00F); // Blu scuro per gli input
+	ImVec4 temp_ui_button_color = ImVec4(0.26F, 0.59F, 0.98F, 1.00F);
+	ImVec4 temp_ui_input_color	= ImVec4(0.16F, 0.29F, 0.48F, 1.00F);
+	bool show_ui_color_picker	= false;
+	ImVec2 ui_color_picker_pos	= ImVec2(0, 0);
+
+	// stato del salvataggio
+	bool is_saving		= false;
+	bool save_completed = false;
+	std::chrono::steady_clock::time_point save_completed_time;
+
 	ImGui::FileBrowser file_browser{ImGuiFileBrowserFlags_SelectDirectory};
 	std::vector<std::pair<std::string, bool>> log_lines;
 };
 
-auto normalize_audio_files_in_directory(const std::string& input_dir, AppState& state) -> int
+// Funzione per ridurre l'opacità del 20%
+ImVec4 reduce_opacity(const ImVec4& color, float reduction = 0.2F)
+{
+	float new_alpha = color.w * (1.0F - reduction);
+	new_alpha		= std::clamp(new_alpha, 0.0F, 1.0F);
+	return ImVec4(color.x, color.y, color.z, color.w);
+}
+
+// Funzione per applicare i colori dell'interfaccia
+void apply_ui_colors(const AppState& state)
+{
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	// Applica i colori personalizzati con opacità ridotta del 20%
+	ImVec4 button_color = reduce_opacity(state.ui_button_color);
+	ImVec4 input_color	= reduce_opacity(state.ui_input_color);
+
+	style.Colors[ImGuiCol_Button]		 = button_color;
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(button_color.x * 1.2F, button_color.y * 1.2F, button_color.z * 1.2F, button_color.w);
+	style.Colors[ImGuiCol_ButtonActive]	 = ImVec4(button_color.x * 0.8F, button_color.y * 0.8F, button_color.z * 0.8F, button_color.w);
+
+	style.Colors[ImGuiCol_FrameBg]		  = input_color;
+	style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(input_color.x * 1.1F, input_color.y * 1.1F, input_color.z * 1.1F, input_color.w);
+	style.Colors[ImGuiCol_FrameBgActive]  = ImVec4(input_color.x * 1.3F, input_color.y * 1.3F, input_color.z * 1.3F, input_color.w);
+}
+
+void save_settings(AppState& state)
+{
+	// Imposta stato di salvataggio
+	state.is_saving		 = true;
+	state.save_completed = false;
+
+	nlohmann::json j;
+	j["selected_theme"]	 = state.selected_theme;
+	j["custom_color"]	 = {state.custom_color.x, state.custom_color.y, state.custom_color.z, state.custom_color.w};
+	j["ui_button_color"] = {state.ui_button_color.x, state.ui_button_color.y, state.ui_button_color.z, state.ui_button_color.w};
+	j["ui_input_color"]	 = {state.ui_input_color.x, state.ui_input_color.y, state.ui_input_color.z, state.ui_input_color.w};
+
+	std::ofstream file("settings.json");
+	if (file)
+	{
+		file << j.dump(4);
+	}
+
+	// Termine salvataggio
+	state.is_saving			  = false;
+	state.save_completed	  = true;
+	state.save_completed_time = std::chrono::steady_clock::now();
+}
+
+void load_settings(AppState& state)
+{
+	std::ifstream file("settings.json");
+	if (!file)
+	{
+		return;
+	}
+
+	nlohmann::json j;
+	file >> j;
+
+	if (j.contains("selected_theme"))
+	{
+		state.selected_theme = j["selected_theme"].get<int>();
+	}
+
+	if (j.contains("custom_color") && j["custom_color"].is_array())
+	{
+		auto arr		   = j["custom_color"];
+		state.custom_color = ImVec4(arr[0], arr[1], arr[2], arr[3]);
+		state.temp_color   = state.custom_color;
+	}
+
+	if (j.contains("ui_button_color") && j["ui_button_color"].is_array())
+	{
+		auto arr				   = j["ui_button_color"];
+		state.ui_button_color	   = ImVec4(arr[0], arr[1], arr[2], arr[3]);
+		state.temp_ui_button_color = state.ui_button_color;
+	}
+
+	if (j.contains("ui_input_color") && j["ui_input_color"].is_array())
+	{
+		auto arr				  = j["ui_input_color"];
+		state.ui_input_color	  = ImVec4(arr[0], arr[1], arr[2], arr[3]);
+		state.temp_ui_input_color = state.ui_input_color;
+	}
+
+	switch (state.selected_theme)
+	{
+	case 0:
+		ImGui::StyleColorsDark();
+		break;
+	case 1:
+		ImGui::StyleColorsLight();
+		break;
+	case 2:
+		ImGui::StyleColorsClassic();
+		break;
+	}
+
+	// Applica i colori personalizzati dell'interfaccia
+	apply_ui_colors(state);
+}
+
+int normalize_audio_files_in_directory(const std::string& input_dir, AppState& state)
 {
 	if (!fs::exists(input_dir) || !fs::is_directory(input_dir))
 	{
@@ -41,7 +168,6 @@ auto normalize_audio_files_in_directory(const std::string& input_dir, AppState& 
 	}
 
 	state.processed_files = 0;
-
 	state.log_lines.clear();
 
 	for (const auto& entry : fs::directory_iterator(input_dir))
@@ -54,7 +180,6 @@ auto normalize_audio_files_in_directory(const std::string& input_dir, AppState& 
 		const auto& path = entry.path();
 		auto ext		 = path.extension().string();
 
-		// Converti l'estensione in lowercase per il confronto
 		std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
 		if (ext != ".wav" && ext != ".mp3" && ext != ".flac")
@@ -106,21 +231,248 @@ auto normalize_audio_files_in_directory(const std::string& input_dir, AppState& 
 
 void render_ui(AppState& state)
 {
-	// Finestra principale
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
 	ImGui::Begin("Audio Normalizer", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
+	constexpr float kCursorOffsetX = 10.0F;
+	constexpr float kCursorOffsetY = 130.0F;
+	ImGui::SetCursorPosX(kCursorOffsetX);
+
+	ImGui::BeginGroup();
+
+	// Sezione Theme con layout migliorato
+	ImGui::Text("Theme Settings");
+	ImGui::Separator();
+	ImGui::Spacing();
+
+	ImGui::Text("Theme:");
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(120);
+	const char* themes[] = {"Dark", "Light", "Classic"};
+	if (ImGui::Combo("##ThemeSelector", &state.selected_theme, themes, IM_ARRAYSIZE(themes)))
+	{
+		switch (state.selected_theme)
+		{
+		case 0:
+			ImGui::StyleColorsDark();
+			break;
+		case 1:
+			ImGui::StyleColorsLight();
+			break;
+		case 2:
+			ImGui::StyleColorsClassic();
+			break;
+		}
+		apply_ui_colors(state); // Riapplica i colori personalizzati
+	}
+
+	ImGui::Spacing();
+
+	// Prima riga di bottoni
+	if (ImGui::Button("Save Theme", ImVec2(100, 25)))
+	{
+		// Registra posizione del bottone per eventuali popup di feedback (non usato)
+		save_settings(state);
+	}
+	ImGui::SameLine();
+	ImGui::SetCursorPosX(120);
+	if (ImGui::Button("Pick BG Color", ImVec2(100, 25)))
+	{
+		// Registra posizione per aprire il popup sotto il bottone
+		ImVec2 btn_min			= ImGui::GetItemRectMin();
+		ImVec2 btn_max			= ImGui::GetItemRectMax();
+		state.color_picker_pos	= ImVec2(btn_min.x, btn_max.y);
+		state.show_color_picker = !state.show_color_picker;
+		if (state.show_color_picker)
+		{
+			state.temp_color = state.custom_color;
+		}
+	}
+	ImGui::SameLine();
+	// Seconda riga di bottoni - NUOVO PULSANTE PER I COLORI UI
+	if (ImGui::Button("Pick UI Colors", ImVec2(100, 25)))
+	{
+		ImVec2 btn_min			   = ImGui::GetItemRectMin();
+		ImVec2 btn_max			   = ImGui::GetItemRectMax();
+		state.ui_color_picker_pos  = ImVec2(btn_min.x, btn_max.y);
+		state.show_ui_color_picker = !state.show_ui_color_picker;
+		if (state.show_ui_color_picker)
+		{
+			state.temp_ui_button_color = state.ui_button_color;
+			state.temp_ui_input_color  = state.ui_input_color;
+		}
+	}
+
+	ImGui::Spacing();
+	// Feedback di salvataggio
+	if (state.is_saving)
+	{
+		ImGui::SameLine();
+		ImGui::TextColored(ImVec4(0.8F, 0.8F, 0.2F, 1.0F), "Salvataggio in corso...");
+	}
+	else if (state.save_completed)
+	{
+		// Mostra "Salvato" per 2 secondi
+		auto now	  = std::chrono::steady_clock::now();
+		float elapsed = std::chrono::duration<float>(now - state.save_completed_time).count();
+		if (elapsed < 2.0f)
+		{
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0.2F, 0.8F, 0.2F, 1.0F), "Salvato con successo!");
+		}
+		else
+		{
+			state.save_completed = false;
+		}
+	}
+	ImGui::Spacing();
+
+	// Finestra popup per il color picker dello sfondo posizionata sotto il bottone
+	if (state.show_color_picker)
+	{
+		ImGui::SetNextWindowPos(state.color_picker_pos, ImGuiCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(300, 220), ImGuiCond_Always);
+
+		ImGui::Begin("Background Color Picker", &state.show_color_picker, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+
+		float window_width = ImGui::GetWindowSize().x;
+		float text_width   = ImGui::CalcTextSize("Background Color").x;
+		ImGui::SetCursorPosX((window_width - text_width) * 0.5F);
+		ImGui::Text("Background Color");
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		const float picker_width  = 200.0F;
+		const float picker_height = 120.0F;
+		ImGui::SetCursorPosX((window_width - picker_width) * 0.5F);
+
+		// Applica la riduzione di opacità del 20% direttamente nel picker
+		ImVec4 display_color = reduce_opacity(state.temp_color);
+		ImGui::ColorPicker4("##bgcolorpicker", (float*)&state.temp_color, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoLabel,
+							(float*)(float[2]){picker_width, picker_height});
+
+		ImGui::Spacing();
+		ImGui::Text("Preview (with 20%% opacity reduction):");
+		ImGui::ColorButton("##preview", display_color, 0, ImVec2(50, 20));
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		float button_width		 = 80.0F;
+		float button_spacing	 = 20.0F;
+		float total_button_width = (button_width * 2) + button_spacing;
+		float start_x			 = (window_width - total_button_width) * 0.5F;
+
+		ImGui::SetCursorPosX(start_x);
+		if (ImGui::Button("Apply", ImVec2(button_width, 30)))
+		{
+			state.custom_color		= state.temp_color;
+			state.show_color_picker = false;
+			save_settings(state);
+		}
+
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(start_x + button_width + button_spacing);
+		if (ImGui::Button("Cancel", ImVec2(button_width, 30)))
+		{
+			state.show_color_picker = false;
+		}
+
+		ImGui::End();
+	}
+
+	// NUOVA Finestra popup per il color picker dell'interfaccia posizionata sotto il bottone
+	if (state.show_ui_color_picker)
+	{
+		ImGui::SetNextWindowPos(state.ui_color_picker_pos, ImGuiCond_Always);
+		ImGui::SetNextWindowSize(ImVec2(350, 350), ImGuiCond_Always);
+
+		ImGui::Begin("UI Colors Picker", &state.show_ui_color_picker, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+
+		float window_width = ImGui::GetWindowSize().x;
+		float text_width   = ImGui::CalcTextSize("Interface Colors").x;
+		ImGui::SetCursorPosX((window_width - text_width) * 0.5F);
+		ImGui::Text("Interface Colors");
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		// Color picker per i bottoni
+		ImGui::Text("Button Color:");
+		ImVec4 button_preview = reduce_opacity(state.temp_ui_button_color);
+		ImGui::ColorPicker4("##buttoncolorpicker", (float*)&state.temp_ui_button_color, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoLabel,
+							(float*)(float[2]){150.0F, 80.0F});
+
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		ImGui::Text("Preview:");
+		ImGui::ColorButton("##buttonpreview", button_preview, 0, ImVec2(40, 20));
+		ImGui::EndGroup();
+
+		ImGui::Spacing();
+
+		// Color picker per gli input
+		ImGui::Text("Input Field Color:");
+		ImVec4 input_preview = reduce_opacity(state.temp_ui_input_color);
+		ImGui::ColorPicker4("##inputcolorpicker", (float*)&state.temp_ui_input_color, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoLabel,
+							(float*)(float[2]){150.0F, 80.0F});
+
+		ImGui::SameLine();
+		ImGui::BeginGroup();
+		ImGui::Text("Preview:");
+		ImGui::ColorButton("##inputpreview", input_preview, 0, ImVec2(40, 20));
+		ImGui::EndGroup();
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		float button_width		 = 80.0F;
+		float button_spacing	 = 20.0F;
+		float total_button_width = (button_width * 2) + button_spacing;
+		float start_x			 = (window_width - total_button_width) * 0.5F;
+
+		ImGui::SetCursorPosX(start_x);
+		if (ImGui::Button("Apply", ImVec2(button_width, 30)))
+		{
+			state.ui_button_color = state.temp_ui_button_color;
+			state.ui_input_color  = state.temp_ui_input_color;
+			apply_ui_colors(state);
+			state.show_ui_color_picker = false;
+			save_settings(state);
+		}
+
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(start_x + button_width + button_spacing);
+		if (ImGui::Button("Cancel", ImVec2(button_width, 30)))
+		{
+			state.show_ui_color_picker = false;
+		}
+
+		ImGui::End();
+	}
+
+	ImGui::EndGroup();
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Text("Audio File Processing");
 	ImGui::Text("Enter the path to the folder containing the audio files");
 	ImGui::Separator();
+	ImGui::Spacing();
 
-	// Centrare InputText + bottone sfoglia
+	// Rest of the UI remains the same...
 	float total_width  = ImGui::GetContentRegionAvail().x;
-	float button_width = 100.0f;
-	float input_width  = total_width - button_width - 10.0f; // 10px di spazio tra input e bottone
+	float button_width = 120.0F;
+	float input_width  = total_width - button_width - 20.0F;
 
-	// Posiziona il blocco centrato
-	ImGui::SetCursorPosX((total_width - (input_width + button_width + 10.0f)) * 0.5f);
+	float content_width = input_width + button_width + 10.0F;
+	ImGui::SetCursorPosX((total_width - content_width) * 0.5F);
 
 	ImGui::PushItemWidth(input_width);
 	ImGui::InputText("##path", state.path_buffer, sizeof(state.path_buffer), ImGuiInputTextFlags_ReadOnly);
@@ -128,7 +480,7 @@ void render_ui(AppState& state)
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("Browse", ImVec2(button_width, 0)))
+	if (ImGui::Button("Browse Folder", ImVec2(button_width, 0)))
 	{
 		state.file_browser.SetTitle("select audio directory");
 		state.file_browser.SetTypeFilters({});
@@ -156,49 +508,23 @@ void render_ui(AppState& state)
 		state.file_browser.ClearSelected();
 	}
 
+	ImGui::Spacing();
 	ImGui::Separator();
+	ImGui::Spacing();
 
-	// Bottone di esempio per percorsi comuni
-	ImGui::Text("Example paths:");
-
-	// Centrare i 3 bottoni in linea con spaziatura
-	float btn_example_width = 100.0f;
-	float spacing			= 20.0f;
-	float total_btn_width	= btn_example_width * 3 + spacing * 2;
-	ImGui::SetCursorPosX((total_width - total_btn_width) * 0.5f);
-
-	if (ImGui::Button("Home/Music", ImVec2(btn_example_width, 0)))
-	{
-		std::string home_music = std::string(getenv("HOME")) + "/Music";
-		strcpy(state.path_buffer, home_music.c_str());
-		state.selected_path = home_music;
-	}
-	ImGui::SameLine(0.0f, spacing);
-	if (ImGui::Button("Desktop", ImVec2(btn_example_width, 0)))
-	{
-		std::string desktop = std::string(getenv("HOME")) + "/Desktop";
-		strcpy(state.path_buffer, desktop.c_str());
-		state.selected_path = desktop;
-	}
-	ImGui::SameLine(0.0f, spacing);
-	if (ImGui::Button("Downloads", ImVec2(btn_example_width, 0)))
-	{
-		std::string downloads = std::string(getenv("HOME")) + "/Downloads";
-		strcpy(state.path_buffer, downloads.c_str());
-		state.selected_path = downloads;
-	}
-
-	ImGui::Separator();
-
-	// Mostra il percorso selezionato
+	// Directory info display
 	if (!state.selected_path.empty())
 	{
-		ImGui::Text("Selected directory:");
+		ImGui::TextColored(ImVec4(0.7F, 0.9F, 1.0F, 1.0F), "Selected Directory:");
+		ImGui::Indent();
 		ImGui::TextWrapped("%s", state.selected_path.c_str());
+		ImGui::Unindent();
+
+		ImGui::Spacing();
 
 		if (fs::exists(state.selected_path) && fs::is_directory(state.selected_path))
 		{
-			ImGui::TextColored(ImVec4(0, 1, 0, 1), "Valid directory");
+			ImGui::TextColored(ImVec4(0.2F, 0.8F, 0.2F, 1.0F), "Valid directory");
 
 			int audio_files = 0;
 			try
@@ -215,33 +541,41 @@ void render_ui(AppState& state)
 						}
 					}
 				}
-				ImGui::Text("audio files found: %d", audio_files);
+				ImGui::Text("Audio files found: %d", audio_files);
 			}
 			catch (...)
 			{
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Warning: Unable to read folder");
+				ImGui::TextColored(ImVec4(1.0F, 0.8F, 0.2F, 1.0F), "Warning: Unable to read folder");
 			}
 		}
 		else
 		{
-			ImGui::TextColored(ImVec4(1, 0, 0, 1), "Directory not found");
+			ImGui::TextColored(ImVec4(0.9f, 0.2f, 0.2f, 1.0f), "Directory not found");
 		}
+
+		ImGui::Spacing();
 		ImGui::Separator();
+		ImGui::Spacing();
 	}
 
-	// Spaziatura sopra bottone normalizza
-	ImGui::Dummy(ImVec2(0, 20));
+	ImGui::Spacing();
 
-	// Bottone Normalizza centrato
-	float btn_norm_width = 200.0f;
+	// Normalize button
+	float btn_norm_width = 220.0f;
 	ImGui::SetCursorPosX((total_width - btn_norm_width) * 0.5f);
 
 	bool can_process = !state.selected_path.empty() && fs::exists(state.selected_path) && fs::is_directory(state.selected_path) && !state.processing;
 
 	if (!can_process)
+	{
 		ImGui::BeginDisabled();
+	}
 
-	if (ImGui::Button("Normalize Audio File", ImVec2(btn_norm_width, 40)))
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.6f, 0.2f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.7f, 0.3f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.5f, 0.1f, 1.0f));
+
+	if (ImGui::Button("🎵 Normalize Audio Files", ImVec2(btn_norm_width, 45)))
 	{
 		state.processing   = true;
 		state.show_success = false;
@@ -258,57 +592,102 @@ void render_ui(AppState& state)
 			.detach();
 	}
 
+	ImGui::PopStyleColor(3);
+
 	if (!can_process)
 		ImGui::EndDisabled();
 
-	// Spaziatura sotto bottone normalizza
-	ImGui::Dummy(ImVec2(0, 20));
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Separator();
 
-	// Stato elaborazione
+	// Information section
+	ImGui::BeginGroup();
+	ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "Information");
+	ImGui::Separator();
+	ImGui::Spacing();
+
+	ImGui::Bullet();
+	ImGui::Text("Supported formats: WAV, MP3, FLAC");
+	ImGui::Bullet();
+	ImGui::Text("Requires FFmpeg installed on the system");
+	ImGui::Bullet();
+	ImGui::Text("Tip: Copy and paste the path from file manager");
+	ImGui::EndGroup();
+
+	ImGui::Separator();
+
+	// Processing status
 	if (state.processing)
 	{
+		ImGui::Spacing();
 		ImGui::Separator();
-		ImGui::Text("Processing in progress...");
-		ImGui::ProgressBar(-1.0f * ImGui::GetTime(), ImVec2(-1.0f, 0.0f));
-		ImGui::Text("This may take several minutes...");
+		ImGui::Spacing();
+
+		float processing_text_width = ImGui::CalcTextSize("🔄 Processing in progress...").x;
+		ImGui::SetCursorPosX((total_width - processing_text_width) * 0.5F);
+		ImGui::TextColored(ImVec4(0.2f, 0.8f, 1.0f, 1.0F), "🔄 Processing in progress...");
+
+		ImGui::ProgressBar(-1.0f * ImGui::GetTime(), ImVec2(-1.0F, 0.0F));
+
+		float tip_text_width = ImGui::CalcTextSize("This may take several minutes...").x;
+		ImGui::SetCursorPosX((total_width - tip_text_width) * 0.5F);
+		ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0F), "This may take several minutes...");
 	}
 
-	// Messaggi di successo
+	// Success messages
 	if (state.show_success)
 	{
+		ImGui::Spacing();
 		ImGui::Separator();
-		ImGui::TextColored(ImVec4(0, 1, 0, 1), "Processing completed!");
-		ImGui::Text("File processati: %d", state.processed_files);
+		ImGui::Spacing();
+
+		float success_text_width = ImGui::CalcTextSize("✅ Processing completed successfully!").x;
+		ImGui::SetCursorPosX((total_width - success_text_width) * 0.5F);
+		ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.2f, 1.0f), "✅ Processing completed successfully!");
+
+		float files_text = ImGui::CalcTextSize("Files processed: 999").x;
+		ImGui::SetCursorPosX((total_width - files_text) * 0.5f);
+		ImGui::Text("Files processed: %d", state.processed_files);
 	}
 
+	// Processing log
 	if (!state.log_lines.empty())
 	{
+		ImGui::Spacing();
 		ImGui::Separator();
-		ImGui::Text("Status:");
+		ImGui::Spacing();
 
-		for (const auto& log : state.log_lines)
+		ImGui::TextColored(ImVec4(0.8F, 0.8F, 0.8F, 1.0F), "Processing Status:");
+		ImGui::Spacing();
+
+		if (ImGui::BeginChild("LogArea", ImVec2(0, 150), 1))
 		{
-			const auto& filename = log.first;
-			bool success		 = log.second;
+			for (const auto& log : state.log_lines)
+			{
+				const auto& filename = log.first;
+				bool success		 = log.second;
 
-			ImVec4 color = success ? ImVec4(0, 1, 0, 1) : ImVec4(1, 0, 1, 0);
-			ImGui::TextColored(color, "%s %s", success ? "✓" : "✗", filename.c_str());
+				ImVec4 color	 = success ? ImVec4(0.2f, 0.8f, 0.2f, 1.0f) : ImVec4(0.9f, 0.2f, 0.2f, 1.0F);
+				const char* icon = success ? "✅" : "❌";
+				ImGui::TextColored(color, "%s %s", icon, filename.c_str());
+			}
 		}
+		ImGui::EndChild();
 	}
 
-	// Messaggi di errore
+	// Error messages
 	if (state.show_error)
 	{
+		ImGui::Spacing();
 		ImGui::Separator();
-		ImGui::TextColored(ImVec4(1, 0, 0, 1), "✗ Errore:");
-		ImGui::TextWrapped("%s", state.error_message.c_str());
-	}
+		ImGui::Spacing();
 
-	ImGui::Separator();
-	ImGui::Text("Supported formats: WAV, MP3, FLAC");
-	ImGui::Text("Requires FFmpeg installed on the system");
-	ImGui::Text("Tip: Copy and paste the path from the file manager");
-	ImGui::Separator();
+		ImGui::TextColored(ImVec4(0.9F, 0.2F, 0.2F, 1.0F), "Error:");
+		ImGui::Indent();
+		ImGui::TextWrapped("%s", state.error_message.c_str());
+		ImGui::Unindent();
+	}
 
 	ImGui::End();
 }
@@ -320,7 +699,6 @@ void glfw_error_callback(int error, const char* description)
 
 auto main(int argc, char* argv[]) -> int
 {
-	// Setup GLFW
 	glfwSetErrorCallback(glfw_error_callback);
 	if (!glfwInit())
 	{
@@ -328,13 +706,10 @@ auto main(int argc, char* argv[]) -> int
 		return 1;
 	}
 
-	// Configurazione della finestra OpenGL
 	const char* glsl_version = "#version 130";
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
-	// Crea la finestra
 	GLFWwindow* window = glfwCreateWindow(1024, 768, "Audio Normalizer", nullptr, nullptr);
 	if (window == nullptr)
 	{
@@ -344,9 +719,8 @@ auto main(int argc, char* argv[]) -> int
 	}
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1); // Enable vsync
+	glfwSwapInterval(1);
 
-	// Inizializza GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		spdlog::error("Error initializing GLAD");
@@ -354,42 +728,42 @@ auto main(int argc, char* argv[]) -> int
 		return 1;
 	}
 
-	// Setup ImGui
 	IMGUI_CHECKVERSION();
+
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
+	std::cout << "Working dir: " << std::filesystem::current_path() << std::endl;
+	io.Fonts->AddFontFromFileTTF("fonts/static/Roboto-Regular.ttf", 16.0F);
+	ImGui::StyleColorsDark();
+	AppState app_state;
+
+	load_settings(app_state);
+
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-	// Setup style
-	ImGui::StyleColorsDark();
-
-	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
-
-	// Stato dell'applicazione
-	AppState app_state;
 
 	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 
-		// Start the Dear ImGui frame
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		// Render UI
 		render_ui(app_state);
 
-		// Rendering
 		ImGui::Render();
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
 		glViewport(0, 0, display_w, display_h);
-		glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+
+		// Applica la riduzione di opacità del 20% allo sfondo
+		ImVec4 bg_color = reduce_opacity(app_state.custom_color);
+		glClearColor(bg_color.x, bg_color.y, bg_color.z, bg_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

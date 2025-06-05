@@ -3,6 +3,7 @@
 
 #include <string>
 
-auto normalize_audio_files_in_directory(const std::string& input_dir) -> int;
+int normalize_audio_files_in_directory(const std::string& input_dir);
+void glfw_error_callback(int error, const char* description);
 
 #endif // MAIN_HPP

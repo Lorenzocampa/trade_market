@@ -1,3 +1,3 @@
-/mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles/AudioNormalizer.dir
-/mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles/edit_cache.dir
-/mnt/c/common_windows/dev/decibel_normalize/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/common_windows/dev/prog/decibel_normalize/build/CMakeFiles/AudioNormalizer.dir
+/mnt/c/common_windows/dev/prog/decibel_normalize/build/CMakeFiles/edit_cache.dir
+/mnt/c/common_windows/dev/prog/decibel_normalize/build/CMakeFiles/rebuild_cache.dir
