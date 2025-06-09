@@ -1,5 +1,3 @@
-// main_updated.cpp
-
 #include "../include/main.hpp"
 
 #include "../external/imgui/backends/imgui_impl_glfw.h"
@@ -37,15 +35,13 @@ struct AppState
 	bool show_color_picker	= false;
 	ImVec2 color_picker_pos = ImVec2(0, 0);
 
-	// Nuovi colori per l'interfaccia
-	ImVec4 ui_button_color		= ImVec4(0.26F, 0.59F, 0.98F, 1.00F); // Blu per i bottoni
-	ImVec4 ui_input_color		= ImVec4(0.16F, 0.29F, 0.48F, 1.00F); // Blu scuro per gli input
+	ImVec4 ui_button_color		= ImVec4(0.26F, 0.59F, 0.98F, 1.00F);
+	ImVec4 ui_input_color		= ImVec4(0.16F, 0.29F, 0.48F, 1.00F);
 	ImVec4 temp_ui_button_color = ImVec4(0.26F, 0.59F, 0.98F, 1.00F);
 	ImVec4 temp_ui_input_color	= ImVec4(0.16F, 0.29F, 0.48F, 1.00F);
 	bool show_ui_color_picker	= false;
 	ImVec2 ui_color_picker_pos	= ImVec2(0, 0);
 
-	// stato del salvataggio
 	bool is_saving		= false;
 	bool save_completed = false;
 	std::chrono::steady_clock::time_point save_completed_time;
@@ -54,7 +50,6 @@ struct AppState
 	std::vector<std::pair<std::string, bool>> log_lines;
 };
 
-// Funzione per ridurre l'opacità del 20%
 ImVec4 reduce_opacity(const ImVec4& color, float reduction = 0.2F)
 {
 	float new_alpha = color.w * (1.0F - reduction);
@@ -62,12 +57,10 @@ ImVec4 reduce_opacity(const ImVec4& color, float reduction = 0.2F)
 	return ImVec4(color.x, color.y, color.z, color.w);
 }
 
-// Funzione per applicare i colori dell'interfaccia
 void apply_ui_colors(const AppState& state)
 {
 	ImGuiStyle& style = ImGui::GetStyle();
 
-	// Applica i colori personalizzati con opacità ridotta del 20%
 	ImVec4 button_color = reduce_opacity(state.ui_button_color);
 	ImVec4 input_color	= reduce_opacity(state.ui_input_color);
 
@@ -82,7 +75,6 @@ void apply_ui_colors(const AppState& state)
 
 void save_settings(AppState& state)
 {
-	// Imposta stato di salvataggio
 	state.is_saving		 = true;
 	state.save_completed = false;
 
@@ -98,7 +90,6 @@ void save_settings(AppState& state)
 		file << j.dump(4);
 	}
 
-	// Termine salvataggio
 	state.is_saving			  = false;
 	state.save_completed	  = true;
 	state.save_completed_time = std::chrono::steady_clock::now();
@@ -154,7 +145,6 @@ void load_settings(AppState& state)
 		break;
 	}
 
-	// Applica i colori personalizzati dell'interfaccia
 	apply_ui_colors(state);
 }
 
@@ -170,6 +160,11 @@ int normalize_audio_files_in_directory(const std::string& input_dir, AppState& s
 	state.processed_files = 0;
 	state.log_lines.clear();
 
+	// filter chain
+	const std::string filter_chain = "loudnorm=I=-14:TP=-1.5:LRA=11,"
+									 "acompressor=threshold=-20dB:ratio=4:attack=5:release=200:makeup=6,"
+									 "alimiter=limit=1.0";
+
 	for (const auto& entry : fs::directory_iterator(input_dir))
 	{
 		if (!entry.is_regular_file())
@@ -177,9 +172,7 @@ int normalize_audio_files_in_directory(const std::string& input_dir, AppState& s
 			continue;
 		}
 
-		const auto& path = entry.path();
-		auto ext		 = path.extension().string();
-
+		auto ext = entry.path().extension().string();
 		std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
 		if (ext != ".wav" && ext != ".mp3" && ext != ".flac")
@@ -187,8 +180,9 @@ int normalize_audio_files_in_directory(const std::string& input_dir, AppState& s
 			continue;
 		}
 
+		const auto& path		= entry.path();
 		std::string temp_output = path.parent_path().string() + "/temp_" + path.filename().string();
-		std::string command		= "ffmpeg -y -i \"" + path.string() + "\" -af loudnorm \"" + temp_output + "\"";
+		std::string command		= "ffmpeg -y -i \"" + path.string() + "\" -af \"" + filter_chain + "\" \"" + temp_output + "\"";
 
 		int result = std::system(command.c_str());
 		std::error_code ec;
@@ -198,7 +192,7 @@ int normalize_audio_files_in_directory(const std::string& input_dir, AppState& s
 			fs::remove(path, ec);
 			if (ec)
 			{
-				spdlog::error("error while removing original file {}", ec.message());
+				spdlog::error("Error removing original file {}: {}", path.filename().string(), ec.message());
 				fs::remove(temp_output, ec);
 				state.log_lines.emplace_back(path.filename().string(), false);
 				continue;
@@ -207,22 +201,22 @@ int normalize_audio_files_in_directory(const std::string& input_dir, AppState& s
 			fs::rename(temp_output, path, ec);
 			if (!ec)
 			{
-				state.processed_files++;
+				++state.processed_files;
 				state.log_lines.emplace_back(path.filename().string(), true);
 			}
 			else
 			{
+				spdlog::error("Error renaming temp file {}: {}", temp_output, ec.message());
 				state.log_lines.emplace_back(path.filename().string(), false);
 			}
 		}
 		else
 		{
-			spdlog::error("error elaborating: {}", path.filename().string());
+			spdlog::error("FFmpeg failed on {}: exit code {}", path.filename().string(), result);
 			fs::remove(temp_output, ec);
 			state.log_lines.emplace_back(path.filename().string(), false);
 		}
-
-		spdlog::info("Elaborating: {}", path.filename().string());
+		spdlog::info("Processed: {}", path.filename().string());
 	}
 
 	spdlog::info("Processing completed. Files processed: {}", state.processed_files);
@@ -241,7 +235,6 @@ void render_ui(AppState& state)
 
 	ImGui::BeginGroup();
 
-	// Sezione Theme con layout migliorato
 	ImGui::Text("Theme Settings");
 	ImGui::Separator();
 	ImGui::Spacing();
@@ -264,22 +257,19 @@ void render_ui(AppState& state)
 			ImGui::StyleColorsClassic();
 			break;
 		}
-		apply_ui_colors(state); // Riapplica i colori personalizzati
+		apply_ui_colors(state);
 	}
 
 	ImGui::Spacing();
 
-	// Prima riga di bottoni
 	if (ImGui::Button("Save Theme", ImVec2(100, 25)))
 	{
-		// Registra posizione del bottone per eventuali popup di feedback (non usato)
 		save_settings(state);
 	}
 	ImGui::SameLine();
 	ImGui::SetCursorPosX(120);
 	if (ImGui::Button("Pick BG Color", ImVec2(100, 25)))
 	{
-		// Registra posizione per aprire il popup sotto il bottone
 		ImVec2 btn_min			= ImGui::GetItemRectMin();
 		ImVec2 btn_max			= ImGui::GetItemRectMax();
 		state.color_picker_pos	= ImVec2(btn_min.x, btn_max.y);
@@ -290,7 +280,6 @@ void render_ui(AppState& state)
 		}
 	}
 	ImGui::SameLine();
-	// Seconda riga di bottoni - NUOVO PULSANTE PER I COLORI UI
 	if (ImGui::Button("Pick UI Colors", ImVec2(100, 25)))
 	{
 		ImVec2 btn_min			   = ImGui::GetItemRectMin();
@@ -305,21 +294,19 @@ void render_ui(AppState& state)
 	}
 
 	ImGui::Spacing();
-	// Feedback di salvataggio
 	if (state.is_saving)
 	{
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0.8F, 0.8F, 0.2F, 1.0F), "Salvataggio in corso...");
+		ImGui::TextColored(ImVec4(0.8F, 0.8F, 0.2F, 1.0F), "Saving in progress...");
 	}
 	else if (state.save_completed)
 	{
-		// Mostra "Salvato" per 2 secondi
 		auto now	  = std::chrono::steady_clock::now();
 		float elapsed = std::chrono::duration<float>(now - state.save_completed_time).count();
 		if (elapsed < 2.0f)
 		{
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0.2F, 0.8F, 0.2F, 1.0F), "Salvato con successo!");
+			ImGui::TextColored(ImVec4(0.2F, 0.8F, 0.2F, 1.0F), "saved successfully!");
 		}
 		else
 		{
@@ -328,7 +315,6 @@ void render_ui(AppState& state)
 	}
 	ImGui::Spacing();
 
-	// Finestra popup per il color picker dello sfondo posizionata sotto il bottone
 	if (state.show_color_picker)
 	{
 		ImGui::SetNextWindowPos(state.color_picker_pos, ImGuiCond_Always);
@@ -349,7 +335,6 @@ void render_ui(AppState& state)
 		const float picker_height = 120.0F;
 		ImGui::SetCursorPosX((window_width - picker_width) * 0.5F);
 
-		// Applica la riduzione di opacità del 20% direttamente nel picker
 		ImVec4 display_color = reduce_opacity(state.temp_color);
 		ImGui::ColorPicker4("##bgcolorpicker", (float*)&state.temp_color, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoLabel,
 							(float*)(float[2]){picker_width, picker_height});
@@ -385,7 +370,6 @@ void render_ui(AppState& state)
 		ImGui::End();
 	}
 
-	// NUOVA Finestra popup per il color picker dell'interfaccia posizionata sotto il bottone
 	if (state.show_ui_color_picker)
 	{
 		ImGui::SetNextWindowPos(state.ui_color_picker_pos, ImGuiCond_Always);
@@ -402,7 +386,6 @@ void render_ui(AppState& state)
 		ImGui::Separator();
 		ImGui::Spacing();
 
-		// Color picker per i bottoni
 		ImGui::Text("Button Color:");
 		ImVec4 button_preview = reduce_opacity(state.temp_ui_button_color);
 		ImGui::ColorPicker4("##buttoncolorpicker", (float*)&state.temp_ui_button_color, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoLabel,
@@ -416,7 +399,6 @@ void render_ui(AppState& state)
 
 		ImGui::Spacing();
 
-		// Color picker per gli input
 		ImGui::Text("Input Field Color:");
 		ImVec4 input_preview = reduce_opacity(state.temp_ui_input_color);
 		ImGui::ColorPicker4("##inputcolorpicker", (float*)&state.temp_ui_input_color, ImGuiColorEditFlags_NoSidePreview | ImGuiColorEditFlags_NoSmallPreview | ImGuiColorEditFlags_NoLabel,
@@ -466,7 +448,6 @@ void render_ui(AppState& state)
 	ImGui::Separator();
 	ImGui::Spacing();
 
-	// Rest of the UI remains the same...
 	float total_width  = ImGui::GetContentRegionAvail().x;
 	float button_width = 120.0F;
 	float input_width  = total_width - button_width - 20.0F;
@@ -512,7 +493,6 @@ void render_ui(AppState& state)
 	ImGui::Separator();
 	ImGui::Spacing();
 
-	// Directory info display
 	if (!state.selected_path.empty())
 	{
 		ImGui::TextColored(ImVec4(0.7F, 0.9F, 1.0F, 1.0F), "Selected Directory:");
@@ -560,7 +540,6 @@ void render_ui(AppState& state)
 
 	ImGui::Spacing();
 
-	// Normalize button
 	float btn_norm_width = 220.0f;
 	ImGui::SetCursorPosX((total_width - btn_norm_width) * 0.5f);
 
@@ -575,7 +554,7 @@ void render_ui(AppState& state)
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.7f, 0.3f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.5f, 0.1f, 1.0f));
 
-	if (ImGui::Button("🎵 Normalize Audio Files", ImVec2(btn_norm_width, 45)))
+	if (ImGui::Button("Normalize Audio Files", ImVec2(btn_norm_width, 45)))
 	{
 		state.processing   = true;
 		state.show_success = false;
@@ -601,7 +580,6 @@ void render_ui(AppState& state)
 	ImGui::Spacing();
 	ImGui::Separator();
 
-	// Information section
 	ImGui::BeginGroup();
 	ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "Information");
 	ImGui::Separator();
@@ -617,16 +595,15 @@ void render_ui(AppState& state)
 
 	ImGui::Separator();
 
-	// Processing status
 	if (state.processing)
 	{
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
 
-		float processing_text_width = ImGui::CalcTextSize("🔄 Processing in progress...").x;
+		float processing_text_width = ImGui::CalcTextSize("Processing in progress...").x;
 		ImGui::SetCursorPosX((total_width - processing_text_width) * 0.5F);
-		ImGui::TextColored(ImVec4(0.2f, 0.8f, 1.0f, 1.0F), "🔄 Processing in progress...");
+		ImGui::TextColored(ImVec4(0.2f, 0.8f, 1.0f, 1.0F), "Processing in progress...");
 
 		ImGui::ProgressBar(-1.0f * ImGui::GetTime(), ImVec2(-1.0F, 0.0F));
 
@@ -635,23 +612,21 @@ void render_ui(AppState& state)
 		ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0F), "This may take several minutes...");
 	}
 
-	// Success messages
 	if (state.show_success)
 	{
 		ImGui::Spacing();
 		ImGui::Separator();
 		ImGui::Spacing();
 
-		float success_text_width = ImGui::CalcTextSize("✅ Processing completed successfully!").x;
+		float success_text_width = ImGui::CalcTextSize("Processing completed successfully!").x;
 		ImGui::SetCursorPosX((total_width - success_text_width) * 0.5F);
-		ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.2f, 1.0f), "✅ Processing completed successfully!");
+		ImGui::TextColored(ImVec4(0.2f, 0.8f, 0.2f, 1.0f), "Processing completed successfully!");
 
 		float files_text = ImGui::CalcTextSize("Files processed: 999").x;
 		ImGui::SetCursorPosX((total_width - files_text) * 0.5f);
 		ImGui::Text("Files processed: %d", state.processed_files);
 	}
 
-	// Processing log
 	if (!state.log_lines.empty())
 	{
 		ImGui::Spacing();
@@ -668,15 +643,13 @@ void render_ui(AppState& state)
 				const auto& filename = log.first;
 				bool success		 = log.second;
 
-				ImVec4 color	 = success ? ImVec4(0.2f, 0.8f, 0.2f, 1.0f) : ImVec4(0.9f, 0.2f, 0.2f, 1.0F);
-				const char* icon = success ? "✅" : "❌";
-				ImGui::TextColored(color, "%s %s", icon, filename.c_str());
+				ImVec4 color = success ? ImVec4(0.2f, 0.8f, 0.2f, 1.0f) : ImVec4(0.9f, 0.2f, 0.2f, 1.0F);
+				ImGui::TextColored(color, "%s %s", filename.c_str());
 			}
 		}
 		ImGui::EndChild();
 	}
 
-	// Error messages
 	if (state.show_error)
 	{
 		ImGui::Spacing();
@@ -745,7 +718,7 @@ auto main(int argc, char* argv[]) -> int
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
 
-	// Main loop
+
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
@@ -761,7 +734,6 @@ auto main(int argc, char* argv[]) -> int
 		glfwGetFramebufferSize(window, &display_w, &display_h);
 		glViewport(0, 0, display_w, display_h);
 
-		// Applica la riduzione di opacità del 20% allo sfondo
 		ImVec4 bg_color = reduce_opacity(app_state.custom_color);
 		glClearColor(bg_color.x, bg_color.y, bg_color.z, bg_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -770,7 +742,6 @@ auto main(int argc, char* argv[]) -> int
 		glfwSwapBuffers(window);
 	}
 
-	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

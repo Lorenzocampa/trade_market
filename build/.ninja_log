@@ -1,0 +1,18 @@
+# ninja log v6
+69	439	1749473615726300000	CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_glfw.cpp.o	c16d4765051e6255
+74	497	1749473615732299200	CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o	e414b8ae7508a845
+41	954	1749473615696120700	CMakeFiles/AudioNormalizer.dir/src/glad.c.o	781b07542f8e0d95
+48	1950	1749473615705298500	CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_demo.cpp.o	85ee5ef9a65d6e03
+59	2319	1749473615716300400	CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_tables.cpp.o	8fc5b12889f7f57b
+53	2778	1749473615709300100	CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_draw.cpp.o	dcd0feb6e07c99de
+64	3112	1749473615721297900	CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o	51d7d9d4c0d7bd93
+44	3697	1749473615701118900	CMakeFiles/AudioNormalizer.dir/external/imgui/imgui.cpp.o	1675e76865f204ef
+80	7245	1749473615738298900	CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o	cc1d5a83ce9b033c
+38	7380	1749473615693118700	CMakeFiles/AudioNormalizer.dir/src/main.cpp.o	3fc18c47928711eb
+7393	14200	1749473623048022100	AudioNormalizer	2e1732be7c064eef
+69	6917	1749473789590938500	CMakeFiles/AudioNormalizer.dir/src/main.cpp.o	3fc18c47928711eb
+6921	13791	1749473796441342900	AudioNormalizer	2e1732be7c064eef
+81	7526	1749473974259920600	CMakeFiles/AudioNormalizer.dir/src/main.cpp.o	3fc18c47928711eb
+7530	14676	1749473981708631400	AudioNormalizer	2e1732be7c064eef
+79	7317	1749474293168997300	CMakeFiles/AudioNormalizer.dir/src/main.cpp.o	3fc18c47928711eb
+7321	14403	1749474300410489200	AudioNormalizer	2e1732be7c064eef
