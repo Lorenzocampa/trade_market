@@ -22,6 +22,7 @@
 	"cmake.buildDirectory": "${workspaceFolder}/build",
 	"cmake.configureOnOpen": true,
 	"cSpell.words": [
+		"gpgconf",
 		"lenght"
 	]
 }
