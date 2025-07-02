@@ -5,7 +5,7 @@
             "name": "Debug with LLDB",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/build/AudioNormalizer",
+            "program": "${workspaceFolder}/build/trade_market",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "build",

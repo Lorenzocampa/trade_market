@@ -11,8 +11,8 @@
 # =============================================================================
 
 # =============================================================================
-# Project: AudioNormalizer
-# Configurations: 
+# Project: Project
+# Configurations: Debug
 # =============================================================================
 
 #############################################
@@ -20,6 +20,11 @@
 
 ninja_required_version = 1.5
 
+
+#############################################
+# Set configuration variable for custom commands.
+
+CONFIGURATION = Debug
 # =============================================================================
 # Include auxiliary files.
 
@@ -34,140 +39,123 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /mnt/c/common_windows/dev/proj/decibel_normalize/build/
+cmake_ninja_workdir = /mnt/c/common_windows/dev/proj/trade_market/build/
 # =============================================================================
-# Object build statements for EXECUTABLE target AudioNormalizer
+# Object build statements for EXECUTABLE target trade_market
 
 
 #############################################
-# Order-only phony target for AudioNormalizer
+# Order-only phony target for trade_market
 
-build cmake_object_order_depends_target_AudioNormalizer: phony || .
+build cmake_object_order_depends_target_trade_market: phony || cmake_object_order_depends_target_gl3w
 
-build CMakeFiles/AudioNormalizer.dir/src/main.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/src/main.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/src/main.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/src
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
+build CMakeFiles/trade_market.dir/src/main.o: CXX_COMPILER__trade_market_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/src/main.cpp || cmake_object_order_depends_target_trade_market
+  DEP_FILE = CMakeFiles/trade_market.dir/src/main.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/include -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/trade_market.dir
+  OBJECT_FILE_DIR = CMakeFiles/trade_market.dir/src
 
-build CMakeFiles/AudioNormalizer.dir/src/glad.c.o: C_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/src/glad.c || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/src/glad.c.o.d
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/src
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
+build CMakeFiles/trade_market.dir/lib/imgui/backends/imgui_impl_sdl2.o: CXX_COMPILER__trade_market_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends/imgui_impl_sdl2.cpp || cmake_object_order_depends_target_trade_market
+  DEP_FILE = CMakeFiles/trade_market.dir/lib/imgui/backends/imgui_impl_sdl2.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/include -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/trade_market.dir
+  OBJECT_FILE_DIR = CMakeFiles/trade_market.dir/lib/imgui/backends
 
-build CMakeFiles/AudioNormalizer.dir/external/imgui/imgui.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/imgui.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imgui/imgui.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imgui
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
+build CMakeFiles/trade_market.dir/lib/imgui/backends/imgui_impl_opengl3.o: CXX_COMPILER__trade_market_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_trade_market
+  DEP_FILE = CMakeFiles/trade_market.dir/lib/imgui/backends/imgui_impl_opengl3.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/include -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/trade_market.dir
+  OBJECT_FILE_DIR = CMakeFiles/trade_market.dir/lib/imgui/backends
 
-build CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_demo.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/imgui_demo.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_demo.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imgui
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
+build CMakeFiles/trade_market.dir/lib/imgui/imgui.o: CXX_COMPILER__trade_market_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/lib/imgui/imgui.cpp || cmake_object_order_depends_target_trade_market
+  DEP_FILE = CMakeFiles/trade_market.dir/lib/imgui/imgui.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/include -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/trade_market.dir
+  OBJECT_FILE_DIR = CMakeFiles/trade_market.dir/lib/imgui
 
-build CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_draw.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/imgui_draw.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_draw.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imgui
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
+build CMakeFiles/trade_market.dir/lib/imgui/imgui_draw.o: CXX_COMPILER__trade_market_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/lib/imgui/imgui_draw.cpp || cmake_object_order_depends_target_trade_market
+  DEP_FILE = CMakeFiles/trade_market.dir/lib/imgui/imgui_draw.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/include -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/trade_market.dir
+  OBJECT_FILE_DIR = CMakeFiles/trade_market.dir/lib/imgui
 
-build CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_tables.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/imgui_tables.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_tables.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imgui
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
+build CMakeFiles/trade_market.dir/lib/imgui/imgui_tables.o: CXX_COMPILER__trade_market_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/lib/imgui/imgui_tables.cpp || cmake_object_order_depends_target_trade_market
+  DEP_FILE = CMakeFiles/trade_market.dir/lib/imgui/imgui_tables.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/include -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/trade_market.dir
+  OBJECT_FILE_DIR = CMakeFiles/trade_market.dir/lib/imgui
 
-build CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imgui
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
-
-build CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_glfw.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends/imgui_impl_glfw.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_glfw.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imgui/backends
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
-
-build CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends/imgui_impl_opengl3.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imgui/backends
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
-
-build CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o: CXX_COMPILER__AudioNormalizer_unscanned_ /mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog/ImGuiFileDialog.cpp || cmake_object_order_depends_target_AudioNormalizer
-  DEFINES = -DSPDLOG_COMPILED_LIB
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o.d
-  FLAGS = -std=gnu++20
-  INCLUDES = -I/mnt/c/common_windows/dev/proj/decibel_normalize/include -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imgui/backends -I/mnt/c/common_windows/dev/proj/decibel_normalize/external/imguifiledialog
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
-  OBJECT_FILE_DIR = CMakeFiles/AudioNormalizer.dir/external/imguifiledialog
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_PDB = AudioNormalizer.pdb
+build CMakeFiles/trade_market.dir/lib/imgui/imgui_widgets.o: CXX_COMPILER__trade_market_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/lib/imgui/imgui_widgets.cpp || cmake_object_order_depends_target_trade_market
+  DEP_FILE = CMakeFiles/trade_market.dir/lib/imgui/imgui_widgets.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/include -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui -I/mnt/c/common_windows/dev/proj/trade_market/lib/imgui/backends -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/trade_market.dir
+  OBJECT_FILE_DIR = CMakeFiles/trade_market.dir/lib/imgui
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target AudioNormalizer
+# Link build statements for EXECUTABLE target trade_market
 
 
 #############################################
-# Link the executable AudioNormalizer
+# Link the executable trade_market
 
-build AudioNormalizer: CXX_EXECUTABLE_LINKER__AudioNormalizer_ CMakeFiles/AudioNormalizer.dir/src/main.cpp.o CMakeFiles/AudioNormalizer.dir/src/glad.c.o CMakeFiles/AudioNormalizer.dir/external/imgui/imgui.cpp.o CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_demo.cpp.o CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_draw.cpp.o CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_tables.cpp.o CMakeFiles/AudioNormalizer.dir/external/imgui/imgui_widgets.cpp.o CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_glfw.cpp.o CMakeFiles/AudioNormalizer.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o CMakeFiles/AudioNormalizer.dir/external/imguifiledialog/ImGuiFileDialog.cpp.o | /usr/lib/x86_64-linux-gnu/libglfw.so.3.4 /usr/local/lib/libspdlogd.a /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so
-  DEP_FILE = CMakeFiles/AudioNormalizer.dir/link.d
-  LINK_FLAGS = -Wl,--dependency-file=CMakeFiles/AudioNormalizer.dir/link.d
-  LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libglfw.so.3.4  /usr/local/lib/libspdlogd.a  /usr/lib/x86_64-linux-gnu/libGLX.so  /usr/lib/x86_64-linux-gnu/libOpenGL.so
-  OBJECT_DIR = CMakeFiles/AudioNormalizer.dir
+build trade_market: CXX_EXECUTABLE_LINKER__trade_market_Debug CMakeFiles/trade_market.dir/src/main.o CMakeFiles/trade_market.dir/lib/imgui/backends/imgui_impl_sdl2.o CMakeFiles/trade_market.dir/lib/imgui/backends/imgui_impl_opengl3.o CMakeFiles/trade_market.dir/lib/imgui/imgui.o CMakeFiles/trade_market.dir/lib/imgui/imgui_draw.o CMakeFiles/trade_market.dir/lib/imgui/imgui_tables.o CMakeFiles/trade_market.dir/lib/imgui/imgui_widgets.o | libgl3w.a || libgl3w.a
+  DEP_FILE = CMakeFiles/trade_market.dir/link.d
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic  -Wl,--dependency-file=CMakeFiles/trade_market.dir/link.d
+  LINK_LIBRARIES = libgl3w.a  -lSDL2  -lGL  -lpthread  -ldl  -lcurl
+  LINK_PATH = -L/mnt/c/common_windows/dev/proj/trade_market/build
+  OBJECT_DIR = CMakeFiles/trade_market.dir
   POST_BUILD = :
   PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/AudioNormalizer.dir/
-  TARGET_FILE = AudioNormalizer
-  TARGET_PDB = AudioNormalizer.pdb
+  TARGET_FILE = trade_market
+  TARGET_PDB = trade_market.dbg
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target gl3w
+
+
+#############################################
+# Order-only phony target for gl3w
+
+build cmake_object_order_depends_target_gl3w: phony || .
+
+build CMakeFiles/gl3w.dir/lib/gl3w/gl3w.o: CXX_COMPILER__gl3w_unscanned_Debug /mnt/c/common_windows/dev/proj/trade_market/lib/gl3w/gl3w.cpp || cmake_object_order_depends_target_gl3w
+  DEP_FILE = CMakeFiles/gl3w.dir/lib/gl3w/gl3w.o.d
+  FLAGS = -g
+  INCLUDES = -I/usr/include/SDL2 -I/mnt/c/common_windows/dev/proj/trade_market/lib/gl3w
+  OBJECT_DIR = CMakeFiles/gl3w.dir
+  OBJECT_FILE_DIR = CMakeFiles/gl3w.dir/lib/gl3w
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target gl3w
+
+
+#############################################
+# Link the static library libgl3w.a
+
+build libgl3w.a: CXX_STATIC_LIBRARY_LINKER__gl3w_Debug CMakeFiles/gl3w.dir/lib/gl3w/gl3w.o
+  LANGUAGE_COMPILE_FLAGS = -g
+  OBJECT_DIR = CMakeFiles/gl3w.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = libgl3w.a
+  TARGET_PDB = gl3w.a.dbg
 
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /mnt/c/common_windows/dev/proj/decibel_normalize/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /mnt/c/common_windows/dev/proj/trade_market/build && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -178,7 +166,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /mnt/c/common_windows/dev/proj/decibel_normalize/build && /usr/bin/cmake --regenerate-during-build -S/mnt/c/common_windows/dev/proj/decibel_normalize -B/mnt/c/common_windows/dev/proj/decibel_normalize/build
+  COMMAND = cd /mnt/c/common_windows/dev/proj/trade_market/build && /usr/bin/cmake --regenerate-during-build -S/mnt/c/common_windows/dev/proj/trade_market -B/mnt/c/common_windows/dev/proj/trade_market/build
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -186,7 +174,37 @@ build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
 build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 # =============================================================================
+# Write statements declared in CMakeLists.txt:
+# /mnt/c/common_windows/dev/proj/trade_market/CMakeLists.txt
+# =============================================================================
+
+
+#############################################
+# Utility command for edit_cache
+
+build lib/imgui/CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /mnt/c/common_windows/dev/proj/trade_market/build/lib/imgui && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build lib/imgui/edit_cache: phony lib/imgui/CMakeFiles/edit_cache.util
+
+
+#############################################
+# Utility command for rebuild_cache
+
+build lib/imgui/CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /mnt/c/common_windows/dev/proj/trade_market/build/lib/imgui && /usr/bin/cmake --regenerate-during-build -S/mnt/c/common_windows/dev/proj/trade_market -B/mnt/c/common_windows/dev/proj/trade_market/build
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build lib/imgui/rebuild_cache: phony lib/imgui/CMakeFiles/rebuild_cache.util
+
+# =============================================================================
 # Target aliases.
+
+build gl3w: phony libgl3w.a
 
 # =============================================================================
 # Folder targets.
@@ -194,9 +212,21 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /mnt/c/common_windows/dev/proj/decibel_normalize/build
+# Folder: /mnt/c/common_windows/dev/proj/trade_market/build
 
-build all: phony AudioNormalizer
+build all: phony trade_market libgl3w.a lib/imgui/all
+
+# =============================================================================
+
+#############################################
+# Folder: /mnt/c/common_windows/dev/proj/trade_market/build/lib/imgui
+
+build lib/imgui/all: phony
+
+# =============================================================================
+# Unknown Build Time Dependencies.
+# Tell Ninja that they may appear as side effects of build rules
+# otherwise ordered by order-only dependencies.
 
 # =============================================================================
 # Built-in targets
@@ -205,14 +235,14 @@ build all: phony AudioNormalizer
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | /mnt/c/common_windows/dev/proj/decibel_normalize/CMakeLists.txt /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3Config.cmake /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3ConfigVersion.cmake /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3Targets-none.cmake /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3Targets.cmake /usr/local/lib/cmake/spdlog/spdlogConfig.cmake /usr/local/lib/cmake/spdlog/spdlogConfigTargets-debug.cmake /usr/local/lib/cmake/spdlog/spdlogConfigTargets.cmake /usr/local/lib/cmake/spdlog/spdlogConfigVersion.cmake /usr/share/cmake-3.31/Modules/CMakeCCompiler.cmake.in /usr/share/cmake-3.31/Modules/CMakeCCompilerABI.c /usr/share/cmake-3.31/Modules/CMakeCInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCXXCompiler.cmake.in /usr/share/cmake-3.31/Modules/CMakeCXXCompilerABI.cpp /usr/share/cmake-3.31/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.31/Modules/CMakeCompilerIdDetection.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCXXCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompilerSupport.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake /usr/share/cmake-3.31/Modules/CMakeFindBinUtils.cmake /usr/share/cmake-3.31/Modules/CMakeFindDependencyMacro.cmake /usr/share/cmake-3.31/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.31/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.31/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.31/Modules/CMakeNinjaFindMake.cmake /usr/share/cmake-3.31/Modules/CMakeParseImplicitIncludeInfo.cmake /usr/share/cmake-3.31/Modules/CMakeParseImplicitLinkInfo.cmake /usr/share/cmake-3.31/Modules/CMakeParseLibraryArchitecture.cmake /usr/share/cmake-3.31/Modules/CMakeSystem.cmake.in /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeTestCompilerCommon.cmake /usr/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.31/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.31/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.31/Modules/Compiler/ADSP-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/ARMCC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/ARMClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/AppleClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Borland-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.31/Modules/Compiler/Clang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /usr/share/cmake-3.31/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Cray-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/CrayClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GHS-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-FindBinUtils.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU.cmake /usr/share/cmake-3.31/Modules/Compiler/HP-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IAR-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Intel-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/LCC-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/MSVC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/NVHPC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/OrangeC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/PGI-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/PathScale-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SCO-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/TI-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/TIClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Tasking-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Watcom-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XL-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/zOS-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/FindOpenGL.cmake /usr/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.31/Modules/FindPackageMessage.cmake /usr/share/cmake-3.31/Modules/FindThreads.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake /usr/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.31/Modules/Internal/FeatureTesting.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-C.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-Determine-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.31/Modules/Platform/Linux.cmake /usr/share/cmake-3.31/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.31.6/CMakeCCompiler.cmake CMakeFiles/3.31.6/CMakeCXXCompiler.cmake CMakeFiles/3.31.6/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | /mnt/c/common_windows/dev/proj/trade_market/CMakeLists.txt /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config-version.cmake /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake /usr/share/cmake-3.31/Modules/CMakeCInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.31/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.31/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.31/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.31/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU.cmake /usr/share/cmake-3.31/Modules/FeatureSummary.cmake /usr/share/cmake-3.31/Modules/FindCURL.cmake /usr/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.31/Modules/FindPackageMessage.cmake /usr/share/cmake-3.31/Modules/FindPkgConfig.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-C.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.31/Modules/Platform/Linux.cmake /usr/share/cmake-3.31/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.31/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.31.6/CMakeCCompiler.cmake CMakeFiles/3.31.6/CMakeCXXCompiler.cmake CMakeFiles/3.31.6/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /mnt/c/common_windows/dev/proj/decibel_normalize/CMakeLists.txt /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3Config.cmake /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3ConfigVersion.cmake /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3Targets-none.cmake /usr/lib/x86_64-linux-gnu/cmake/glfw3/glfw3Targets.cmake /usr/local/lib/cmake/spdlog/spdlogConfig.cmake /usr/local/lib/cmake/spdlog/spdlogConfigTargets-debug.cmake /usr/local/lib/cmake/spdlog/spdlogConfigTargets.cmake /usr/local/lib/cmake/spdlog/spdlogConfigVersion.cmake /usr/share/cmake-3.31/Modules/CMakeCCompiler.cmake.in /usr/share/cmake-3.31/Modules/CMakeCCompilerABI.c /usr/share/cmake-3.31/Modules/CMakeCInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCXXCompiler.cmake.in /usr/share/cmake-3.31/Modules/CMakeCXXCompilerABI.cpp /usr/share/cmake-3.31/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.31/Modules/CMakeCompilerIdDetection.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCXXCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineCompilerSupport.cmake /usr/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake /usr/share/cmake-3.31/Modules/CMakeFindBinUtils.cmake /usr/share/cmake-3.31/Modules/CMakeFindDependencyMacro.cmake /usr/share/cmake-3.31/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.31/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.31/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.31/Modules/CMakeNinjaFindMake.cmake /usr/share/cmake-3.31/Modules/CMakeParseImplicitIncludeInfo.cmake /usr/share/cmake-3.31/Modules/CMakeParseImplicitLinkInfo.cmake /usr/share/cmake-3.31/Modules/CMakeParseLibraryArchitecture.cmake /usr/share/cmake-3.31/Modules/CMakeSystem.cmake.in /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake /usr/share/cmake-3.31/Modules/CMakeTestCompilerCommon.cmake /usr/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake /usr/share/cmake-3.31/Modules/CheckIncludeFile.cmake /usr/share/cmake-3.31/Modules/CheckLibraryExists.cmake /usr/share/cmake-3.31/Modules/Compiler/ADSP-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/ARMCC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/ARMClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/AppleClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Borland-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Bruce-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.31/Modules/Compiler/Clang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Clang-DetermineCompilerInternal.cmake /usr/share/cmake-3.31/Modules/Compiler/Compaq-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Cray-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/CrayClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Embarcadero-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Fujitsu-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GHS-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-FindBinUtils.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU.cmake /usr/share/cmake-3.31/Modules/Compiler/HP-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/HP-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IAR-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMCPP-C-DetermineVersionInternal.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMClang-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Intel-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/LCC-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/MSVC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/NVHPC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/NVIDIA-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/OrangeC-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/PGI-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/PathScale-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SCO-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SDCC-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SunPro-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/TI-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/TIClang-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Tasking-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/TinyCC-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/VisualAge-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/Watcom-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XL-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XL-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XLClang-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/zOS-C-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake /usr/share/cmake-3.31/Modules/FindOpenGL.cmake /usr/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.31/Modules/FindPackageMessage.cmake /usr/share/cmake-3.31/Modules/FindThreads.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake /usr/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake /usr/share/cmake-3.31/Modules/Internal/FeatureTesting.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-C.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-Determine-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.31/Modules/Platform/Linux.cmake /usr/share/cmake-3.31/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.31.6/CMakeCCompiler.cmake CMakeFiles/3.31.6/CMakeCXXCompiler.cmake CMakeFiles/3.31.6/CMakeSystem.cmake: phony
+build /mnt/c/common_windows/dev/proj/trade_market/CMakeLists.txt /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config-version.cmake /usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake /usr/share/cmake-3.31/Modules/CMakeCInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.31/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.31/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.31/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.31/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.31/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Compiler/GNU.cmake /usr/share/cmake-3.31/Modules/FeatureSummary.cmake /usr/share/cmake-3.31/Modules/FindCURL.cmake /usr/share/cmake-3.31/Modules/FindPackageHandleStandardArgs.cmake /usr/share/cmake-3.31/Modules/FindPackageMessage.cmake /usr/share/cmake-3.31/Modules/FindPkgConfig.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCXXLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Internal/CMakeCommonLinkerInformation.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-C.cmake /usr/share/cmake-3.31/Modules/Linker/GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linker/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.31/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.31/Modules/Platform/Linux.cmake /usr/share/cmake-3.31/Modules/Platform/UnixPaths.cmake /usr/share/cmake-3.31/Modules/SelectLibraryConfigurations.cmake CMakeCache.txt CMakeFiles/3.31.6/CMakeCCompiler.cmake CMakeFiles/3.31.6/CMakeCXXCompiler.cmake CMakeFiles/3.31.6/CMakeSystem.cmake: phony
 
 
 #############################################

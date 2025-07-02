@@ -1,59 +1,49 @@
-cmake_minimum_required(VERSION 3.20)
-project(AudioNormalizer)
+# SDL2
+find_package(SDL2 REQUIRED)
+include_directories(${SDL2_INCLUDE_DIRS})
+link_directories(${SDL2_LIBRARY_DIRS})
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# ImGui
+add_subdirectory(lib/imgui)
 
-# Find system packages
-find_package(glfw3 REQUIRED)
-find_package(OpenGL REQUIRED)
-find_package(spdlog REQUIRED)
-
-# Include directories
-include_directories(${CMAKE_SOURCE_DIR}/include)
-
-# GLAD sources
-set(GLAD_SOURCES src/glad.c)
-
-# ImGui sources
-set(IMGUI_SOURCES
-    external/imgui/imgui.cpp
-    external/imgui/imgui_demo.cpp
-    external/imgui/imgui_draw.cpp
-    external/imgui/imgui_tables.cpp
-    external/imgui/imgui_widgets.cpp
-    external/imgui/backends/imgui_impl_glfw.cpp
-    external/imgui/backends/imgui_impl_opengl3.cpp
+# Aggiungi le sorgenti di ImGui backend SDL2 + OpenGL3
+set(IMGUI_SRC
+    lib/imgui/backends/imgui_impl_sdl2.cpp
+    lib/imgui/backends/imgui_impl_opengl3.cpp
 )
 
-set(IMGUIFILEDIALOG_SOURCES
-	external/imguifiledialog/ImGuiFileDialog.cpp
-)
+# Tutti i file .cpp di imgui
+file(GLOB IMGUI_CORE lib/imgui/*.cpp)
+list(REMOVE_ITEM IMGUI_CORE "${CMAKE_SOURCE_DIR}/lib/imgui/imgui_demo.cpp")  # opzionale
 
-# Add executable
-add_executable(${PROJECT_NAME}
+# Executable
+add_executable(trade_market
     src/main.cpp
-    ${GLAD_SOURCES}
-    ${IMGUI_SOURCES}
-	${IMGUIFILEDIALOG_SOURCES}
+    ${IMGUI_SRC}
+    ${IMGUI_CORE}
 )
 
-# Include directories for external libraries
-target_include_directories(${PROJECT_NAME} PRIVATE
-    external/imgui
-    external/imgui/backends
-	external/imguifiledialog
-    include
+# Include
+target_include_directories(trade_market PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+    ${SDL2_INCLUDE_DIRS}
+    lib/imgui
+    lib/imgui/backends
 )
 
-# Link libraries
-target_link_libraries(${PROJECT_NAME}
-    glfw
-    OpenGL::GL
-    spdlog::spdlog
+add_library(gl3w STATIC lib/gl3w/gl3w.cpp)
+target_include_directories(gl3w PUBLIC lib/gl3w)
+
+find_package(CURL REQUIRED)
+include_directories(${CURL_INCLUDE_DIRS})
+
+# Link
+target_link_libraries(trade_market PRIVATE
+    gl3w
+    SDL2
+    GL
+    pthread
+    dl
+    curl
 )
 
-# Compiler-specific options
-if(MSVC)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)
-endif()
